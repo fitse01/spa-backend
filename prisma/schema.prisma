@@ -1,0 +1,184 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model user {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique(map: "User_email_key")
+  name      String?
+  age       Int
+  createdAt DateTime @default(now())
+  password  String
+  role      String   @default("user") // Default role as 'user'
+}
+
+model service {
+  id          Int      @id @default(autoincrement())
+  title       String   @db.VarChar(255)
+  tag         String   @db.VarChar(100)
+  imageUrl    String   @db.VarChar(255)
+  description String?  @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+  isActive    Boolean  @default(true)
+}
+
+model Appointment {
+  id                  Int               @id @default(autoincrement())
+  full_name           String            @db.VarChar(100)
+  email               String            @db.VarChar(100)
+  service             String            @db.VarChar(50)
+  date                DateTime
+  message             String?
+  payment_status      PaymentStatus     @default(pending)
+  appointment_status  AppointmentStatus @default(booked)
+  created_at          DateTime          @default(now())
+  updated_at          DateTime          @default(now())
+  cancellation_reason String?           @default("")
+}
+
+enum PaymentStatus {
+  pending
+  completed
+  failed
+}
+
+enum AppointmentStatus {
+  booked
+  completed
+  cancelled
+}
+
+model Employee {
+  id                Int              @id @default(autoincrement())
+  full_name         String           @db.VarChar(255)
+  email             String           @unique @db.VarChar(255)
+  image_url         String?          @db.Text
+  phone_no          String           @db.VarChar(20)
+  position          String           @db.VarChar(100)
+  experience_years  Int
+  personal_info     String?          @db.Text
+  skills            Json
+  employment_status EmploymentStatus @default(Active)
+  role              Role             @default(ordinary)
+  social_media      Json?            @default("[]")
+  created_at        DateTime         @default(now())
+  updated_at        DateTime         @updatedAt
+}
+
+enum EmploymentStatus {
+  Active
+  OnLeave
+  Terminated
+}
+
+enum Role {
+  Admin
+  Stylist
+  Manager
+  Receptionist
+  ordinary
+}
+
+model Testimonial {
+  id         Int      @id @default(autoincrement())
+  full_name  String   @db.VarChar(255)
+  image_url  String   @db.VarChar(255)
+  rating     Int      @db.Int
+  message    String   @db.Text
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  status     String   @default("pending")
+  priority   Int?
+}
+
+model Contact {
+  id               Int      @id @default(autoincrement())
+  email            Json
+  location         Json?
+  phone            Json?
+  workingDays      Json?
+  facebookUrl      String?
+  instagramUrl     String?
+  website          String?
+  emergencyContact String?
+  updated_at       DateTime @updatedAt
+}
+
+model ContactMessage {
+  id          Int       @id @default(autoincrement())
+  message     String    @db.Text
+  fullname    String    @db.VarChar(255)
+  email       String    @db.VarChar(255)
+  phoneNo     String?   @default("") @db.VarChar(20)
+  subject     String    @db.VarChar(255)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  status      String    @default("PENDING")
+  response    String?   @default("") @db.Text
+  respondedAt DateTime? @default(now())
+
+  @@map("ContactMessage")
+}
+
+model FAQ {
+  id        Int      @id @default(autoincrement())
+  question  String
+  answer    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  category  String?
+  order     Int?
+  status    String   @default("ACTIVE")
+}
+
+model CountAnimation {
+  id                Int      @id @default(autoincrement())
+  number            Int
+  title             String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  animationDuration Int?
+  animationType     String?
+  status            String   @default("ACTIVE")
+}
+
+model Video {
+  id          Int      @id @default(autoincrement())
+  title       String   @db.VarChar(255)
+  link        String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  thumbnail   String?  @db.VarChar(255)
+  description String?
+  duration    Int?
+  status      String   @default("ACTIVE")
+}
+
+model Blog {
+  id          Int      @id @default(autoincrement())
+  image       String
+  title       String
+  tag         String?
+  description String?  @db.Text
+  date        DateTime @default(now())
+  author      String
+  status      String   @default("DRAFT")
+  deleted     Boolean  @default(false)
+  updatedAt   DateTime @updatedAt
+}
+
+model Pricing {
+  id          Int      @id @default(autoincrement())
+  image       String
+  title       String   @db.VarChar(100)
+  description String?
+  price       Decimal  @db.Decimal(10, 2)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
