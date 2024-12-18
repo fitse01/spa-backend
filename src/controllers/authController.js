@@ -6,10 +6,6 @@ const prisma = require("../models/user");
 exports.register = async (req, res) => {
   const { email, password, role, age } = req.body;
 
-  // if (!age) {
-  //   return res.status(400).json({ error: "Age is required" });
-  // }
-
   try {
     const existingUser = await prisma.user.findUnique({ where: { email } });
     if (existingUser) {
@@ -57,5 +53,54 @@ exports.login = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Login failed" });
+  }
+};
+
+
+
+
+
+// Update User Email and Password
+exports.updateUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { email, password, role, age } = req.body;
+
+    // Data object for fields to be updated
+    const updateData = {};
+
+    if (email) {
+      const existingUser = await prisma.user.findUnique({ where: { email } });
+      if (existingUser) {
+        return res.status(400).json({ error: "Email is already in use" });
+      }
+      updateData.email = email;
+    }
+
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      updateData.password = hashedPassword;
+    }
+
+    if (role) {
+      if (!["admin", "user"].includes(role)) {
+        return res.status(400).json({ error: "Invalid role provided" });
+      }
+      updateData.role = role;
+    }
+
+
+    const updatedUser = await prisma.user.update({
+      where: { id: parseInt(id) },
+      data: updateData,
+    });
+
+    res.status(200).json({
+      message: "User updated successfully",
+      user: updatedUser,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to update user" });
   }
 };
