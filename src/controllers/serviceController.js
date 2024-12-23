@@ -61,11 +61,18 @@ const createService = async (req, res) => {
 // Update an existing service
 const updateService = async (req, res) => {
   const { id } = req.params;
-  const { title, tag, image_url, description } = req.body;
+  const { title, tag, description } = req.body;
+   const { path } = req.file;  // Get the file path from multer
+
+        // Upload image to Cloudinary
+        const result = await cloudinary.uploader.upload(path);
+
+        // Remove local file after uploading to Cloudinary
+        fs.unlinkSync(path);
   try {
     const updatedService = await prisma.service.update({
       where: { id: parseInt(id) },
-      data: { title, tag, imageUrl: image_url, description },
+      data: { title, tag, imageUrl: result.secure_url, description },
     });
     res.json(updatedService);
   } catch (error) {

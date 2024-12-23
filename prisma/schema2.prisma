@@ -15,7 +15,7 @@ model user {
   createdAt DateTime @default(now())
   password  String
   role      String   @default("user") // Default role as 'user'
-
+@@map ("user")
 }
 
 model service {
@@ -27,7 +27,7 @@ model service {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now())
   isActive    Boolean  @default(true)
-
+@@map ("service")
 }
 
 model Appointment {
@@ -42,7 +42,7 @@ model Appointment {
   created_at          DateTime          @default(now())
   updated_at          DateTime          @default(now())
   cancellation_reason String?           @default("")
-
+@@map ("appointment")
 }
 
 enum PaymentStatus {
@@ -72,7 +72,7 @@ model Employee {
   social_media      Json?            @default("[]")
   created_at        DateTime         @default(now())
   updated_at        DateTime         @updatedAt
-	
+	@@map ("employee")
 }
 
 enum EmploymentStatus {
@@ -99,7 +99,7 @@ model Testimonial {
   updated_at DateTime @updatedAt
   status     String   @default("pending")
   priority   Int?
- 
+  @@map ("testimonial")
 }
 
 model Contact {
@@ -116,7 +116,7 @@ model Contact {
   updated_at       DateTime @updatedAt
 
 
-  
+  @@map ("contact")
 }
 
 model ContactMessage {
@@ -180,7 +180,7 @@ model Blog {
   status      String   @default("DRAFT")
   deleted     Boolean  @default(false)
   updatedAt   DateTime @updatedAt
-
+@@map ("blog")
 }
 
 model Pricing {
@@ -191,7 +191,7 @@ model Pricing {
   price       Decimal  @db.Decimal(10, 2)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-
+@@map ("pricing")
 }
 
 model Product {
@@ -206,5 +206,5 @@ model Product {
   category    String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-	
+	@@map ("product")
 }

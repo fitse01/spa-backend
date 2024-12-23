@@ -27,7 +27,7 @@ CREATE TABLE `service` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Appointment` (
+CREATE TABLE `appointment` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `full_name` VARCHAR(100) NOT NULL,
     `email` VARCHAR(100) NOT NULL,
@@ -44,7 +44,7 @@ CREATE TABLE `Appointment` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Employee` (
+CREATE TABLE `employee` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `full_name` VARCHAR(255) NOT NULL,
     `email` VARCHAR(255) NOT NULL,
@@ -60,12 +60,12 @@ CREATE TABLE `Employee` (
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
 
-    UNIQUE INDEX `Employee_email_key`(`email`),
+    UNIQUE INDEX `employee_email_key`(`email`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Testimonial` (
+CREATE TABLE `testimonial` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `full_name` VARCHAR(255) NOT NULL,
     `image_url` VARCHAR(255) NOT NULL,
@@ -80,9 +80,10 @@ CREATE TABLE `Testimonial` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Contact` (
+CREATE TABLE `contact` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `email` JSON NOT NULL,
+    `emailIndex` VARCHAR(255) NULL,
     `location` JSON NULL,
     `phone` JSON NULL,
     `workingDays` JSON NULL,
@@ -92,11 +93,12 @@ CREATE TABLE `Contact` (
     `emergencyContact` VARCHAR(191) NULL,
     `updated_at` DATETIME(3) NOT NULL,
 
+    UNIQUE INDEX `Contact_email_key`(`emailIndex`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `ContactMessage` (
+CREATE TABLE `contactMessage` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `message` TEXT NOT NULL,
     `fullname` VARCHAR(255) NOT NULL,
@@ -106,7 +108,7 @@ CREATE TABLE `ContactMessage` (
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
     `status` VARCHAR(191) NOT NULL DEFAULT 'PENDING',
-    `response` TEXT NULL DEFAULT '',
+    `response` VARCHAR(191) NULL DEFAULT '',
     `respondedAt` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     PRIMARY KEY (`id`)
@@ -156,7 +158,7 @@ CREATE TABLE `Video` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Blog` (
+CREATE TABLE `blog` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `image` VARCHAR(191) NOT NULL,
     `title` VARCHAR(191) NOT NULL,
@@ -172,7 +174,7 @@ CREATE TABLE `Blog` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Pricing` (
+CREATE TABLE `pricing` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `image` VARCHAR(191) NOT NULL,
     `title` VARCHAR(100) NOT NULL,
@@ -185,7 +187,7 @@ CREATE TABLE `Pricing` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Product` (
+CREATE TABLE `product` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
     `description` TEXT NOT NULL,
